@@ -5,7 +5,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
-@SpringBootApplication(scanBasePackages = {"controller"})
+@SpringBootApplication(scanBasePackages = {"controller","service"})
 @EnableJpaRepositories("repository")
 @EntityScan("model")
 public class NstApplication {
