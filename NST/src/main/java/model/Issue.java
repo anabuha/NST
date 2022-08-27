@@ -1,15 +1,19 @@
 package model;
 
 import java.io.Serializable;
+import java.util.List;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -24,10 +28,10 @@ public class Issue implements Serializable {
 	private IssueID issueID;
 
 	@Column(name = "issue_name")
-	private String name;
+	private String issueName;
 
-	@Column(name = "description")
-	private String description;
+    @Column(name = "description")
+	private String issueDescription;
 
 	@Column(name = "story_point")
 	private int storyPoint;
@@ -37,16 +41,20 @@ public class Issue implements Serializable {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "project_id", nullable = false, insertable = false, updatable = false)
+	@MapsId("project_id")
 	@JsonIgnore
 	private Project project;
+	
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE,mappedBy = "issue")
+	private List<Effort> efforts;
 
 	public Issue() {
 	}
 
-	public Issue(IssueID issueID, String name, String description, int storyPoint, String status) {
+	public Issue(IssueID issueID, String issueName, String issueDescription, int storyPoint, String status) {
 		this.issueID = issueID;
-		this.name = name;
-		this.description = description;
+		this.issueName = issueName;
+		this.issueDescription = issueDescription;
 		this.storyPoint = storyPoint;
 		this.status = status;
 	}
@@ -59,21 +67,7 @@ public class Issue implements Serializable {
 		this.issueID = issueID;
 	}
 
-	public String getName() {
-		return name;
-	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public String getDescription() {
-		return description;
-	}
-
-	public void setDescription(String description) {
-		this.description = description;
-	}
 
 	public int getStoryPoint() {
 		return storyPoint;
@@ -97,6 +91,30 @@ public class Issue implements Serializable {
 
 	public void setProject(Project project) {
 		this.project = project;
+	}
+
+	public List<Effort> getEfforts() {
+		return efforts;
+	}
+
+	public void setEfforts(List<Effort> efforts) {
+		this.efforts = efforts;
+	}
+
+	public String getIssueName() {
+		return issueName;
+	}
+
+	public void setIssueName(String issueName) {
+		this.issueName = issueName;
+	}
+
+	public String getIssueDescription() {
+		return issueDescription;
+	}
+
+	public void setIssueDescription(String issueDescription) {
+		this.issueDescription = issueDescription;
 	}
 	
 	

@@ -39,6 +39,31 @@ public class IssueID implements Serializable{
 	public void setProjectId(int projectId) {
 		this.projectId = projectId;
 	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + issueId;
+		result = prime * result + projectId;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		IssueID other = (IssueID) obj;
+		if (issueId != other.issueId)
+			return false;
+		if (projectId != other.projectId)
+			return false;
+		return true;
+	}
 	
 	
 	
