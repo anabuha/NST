@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 @Entity
 @Table(name = "effort", catalog = "nstdb")
-public class Effort {
+public class Effort implements EntityUtility{
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)

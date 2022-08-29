@@ -1,10 +1,14 @@
 package service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
+import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import dto.impl.EffortDto;
+import dto.impl.ProjectDto;
 import exception.NoSuchElementFoundException;
 import model.Effort;
 import model.Issue;
@@ -28,6 +32,7 @@ public class ProjectServiceImpl implements ProjectService {
 	@Autowired
 	EffortRepository effortRepo;
 
+	
 	@Override
 	public Project getProject(int id) {
 		Project project = projectRepo.findById(id).orElse(null);
@@ -38,24 +43,33 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public List<Project> getAll() {
-		Manager m = managerRepo.findById(1).orElse(null);
-
-		return m.getProjects();
+	public List<ProjectDto> getAll(int managerId) {
+		Manager m = managerRepo.findById(managerId).orElse(null);
+		ModelMapper mapper = new ModelMapper();
+        List<ProjectDto> listDto = new ArrayList<ProjectDto>();
+        for (Project pr : m.getProjects()) {
+			ProjectDto projDto = mapper.map(pr, ProjectDto.class);
+			listDto.add(projDto);
+		}
+        
+		return listDto;
 	}
 
 	@Override
-	public void addProject(Project project) {
+	public void addProject(ProjectDto projectDto, int managerId) {
+		ModelMapper mapper = new ModelMapper();
+		Project newProj = mapper.map(projectDto, Project.class);
+		
 		int counter = 0;
-		project.setManager(managerRepo.findById(1).orElse(null));
-		project.setProjectId(createProjectId());
+		newProj.setManager(managerRepo.findById(managerId).orElse(null));
+		newProj.setProjectId(createProjectId());
 
-		for (Issue issue : project.getIssues()) {
+		for (Issue issue : newProj.getIssues()) {
 			if (issue != null) {
-				issue.setIssueID(new IssueID(project.getProjectId(), ++counter));
+				issue.setIssueID(new IssueID(++counter, newProj.getProjectId()));
 			}
 		}
-		projectRepo.save(project);
+		projectRepo.save(newProj);
 
 	}
 
@@ -65,7 +79,7 @@ public class ProjectServiceImpl implements ProjectService {
 	}
 
 	@Override
-	public void saveEffort(int projectId, int issueId, Effort effort) {
+	public void saveEffort(int projectId, int issueId, EffortDto effortDto) {
 
 		Project proj = projectRepo.findById(projectId).orElse(null);
 
@@ -78,6 +92,9 @@ public class ProjectServiceImpl implements ProjectService {
 			}
 		}
 
+		ModelMapper mapper = new ModelMapper();
+		Effort effort = mapper.map(effortDto, Effort.class);
+		
 		effort.setIssue(issue);
 		effortRepo.save(effort);
 	};

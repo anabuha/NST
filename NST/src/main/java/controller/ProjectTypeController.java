@@ -11,7 +11,7 @@ import model.ProjectType;
 import service.ProjectTypeService;
 
 @RestController
-@CrossOrigin(origins = { "http://localhost:5000", "http://localhost:3000" })
+@CrossOrigin(origins = "*")
 @RequestMapping("/projectType")
 public class ProjectTypeController {
 

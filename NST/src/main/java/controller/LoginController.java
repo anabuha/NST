@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import model.Manager;
+import dto.impl.ManagerDto;
 import service.ManagerService;
 
 @RestController
@@ -22,12 +22,12 @@ public class LoginController {
 
 
 	@RequestMapping(method = RequestMethod.POST)
-	public ResponseEntity<Object> login(@RequestBody Manager m) {
+	public ResponseEntity<Object> login(@RequestBody ManagerDto m) {
 		
-        Manager manager =  managerService.login(m);
-        if(manager!=null) {
+        ManagerDto managerDto =  managerService.login(m);
+        if(managerDto!=null) {
         	return ResponseEntity.ok()
-        			.body(manager);
+        			.body(managerDto);
         } else {
         	return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Wrong credentials!");
         }

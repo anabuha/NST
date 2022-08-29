@@ -1,6 +1,5 @@
 package model;
 
-import java.io.Serializable;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -17,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Table(name = "manager", catalog = "nstdb")
-public class Manager implements Serializable {
+public class Manager implements EntityUtility {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,8 +32,8 @@ public class Manager implements Serializable {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "role")
-	private String role;
+	@Column(name = "position")
+	private String position;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL, mappedBy = "manager")
 	@JsonIgnore
@@ -47,14 +46,18 @@ public class Manager implements Serializable {
 	public Manager() {
 	}
 
-	public Manager(int managerId, String name, String username, String password, String role) {
+	public Manager(int managerId, String name, String username, String password, String position,
+			List<Project> projects, List<Employee> employees) {
 		super();
 		this.managerId = managerId;
 		this.name = name;
 		this.username = username;
 		this.password = password;
-		this.role = role;
+		this.position = position;
+		this.projects = projects;
+		this.employees = employees;
 	}
+
 
 	public int getManagerId() {
 		return managerId;
@@ -88,12 +91,12 @@ public class Manager implements Serializable {
 		this.password = password;
 	}
 
-	public String getRole() {
-		return role;
+	public String getPosition() {
+		return position;
 	}
 
-	public void setRole(String role) {
-		this.role = role;
+	public void setPosition(String position) {
+		this.position = position;
 	}
 
 	public List<Project> getProjects() {

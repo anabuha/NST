@@ -2,16 +2,17 @@ package service;
 
 import java.util.List;
 
-import model.Effort;
+import dto.impl.EffortDto;
+import dto.impl.ProjectDto;
 import model.Project;
 
 public interface ProjectService {
 
 	Project getProject(int id);
 	
-	List<Project> getAll();
+	List<ProjectDto> getAll(int managerId);
 	
-	void addProject(Project project);
+	void addProject(ProjectDto project, int managerId);
 	
-	void saveEffort(int projectId, int issueId, Effort effort);
+	void saveEffort(int projectId, int issueId, EffortDto effort);
 }

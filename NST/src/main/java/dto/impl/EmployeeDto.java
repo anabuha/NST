@@ -1,50 +1,37 @@
-package model;
+package dto.impl;
 
 import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity(name = "Employee")
-@Table(name = "employee", catalog = "nstdb")
-public class Employee implements EntityUtility {
+import dto.Dto;
+import model.Effort;
+import model.Manager;
 
-	@Id
-	@Column(name = "employee_id")
-	@GenericGenerator(name = "kaugen", strategy = "increment")
-	@GeneratedValue(generator = "kaugen")
+public class EmployeeDto implements Dto{
+	
 	private int employeeId;
-
-	@Column(name = "employee_name")
 	private String employeeName;
-
-	@Column(name = "role")
 	private String role;
-
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "manager_id", referencedColumnName = "manager_id", nullable = false)
 	private Manager manager;
-
-	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.REMOVE, mappedBy = "employee")
-	@JsonIgnore
 	private List<Effort> efforts;
 
-	public Employee() {
+	public EmployeeDto() {
+		super();
 	}
 
-	public Employee(int employeeId, String employeeName, String role, Manager manager, List<Effort> efforts) {
+	public EmployeeDto(int employeeId, String employeeName, String role, Manager manager, List<Effort> efforts) {
 		super();
 		this.employeeId = employeeId;
 		this.employeeName = employeeName;
@@ -93,8 +80,5 @@ public class Employee implements EntityUtility {
 		this.efforts = efforts;
 	}
 
-
-
-	
 
 }

@@ -1,10 +1,11 @@
 package service;
 
+import dto.impl.ManagerDto;
 import model.Manager;
 
 public interface ManagerService {
  
 	Manager getManager(int managerId);
 	
-	Manager login(Manager m);
+	ManagerDto login(ManagerDto m);
 }
